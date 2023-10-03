@@ -7,7 +7,6 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  purge: ["./app/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       colors: {
