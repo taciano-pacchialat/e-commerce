@@ -1,4 +1,4 @@
-export interface NavbarElementProps {
+export interface NavbarLinkProps {
   text: string;
   whereto: string;
 }
