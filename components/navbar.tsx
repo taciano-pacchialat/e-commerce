@@ -29,6 +29,8 @@ const NavbarIcon = ({ icon }: { icon: ReactNode }) => {
 };
 
 const NavbarLink = ({ props }: { props: NavbarLinkProps }) => {
+  //TODO change the logo based on the state of the navbar
+  //TODO make each link and arrow unify and love each other
   return (
     <div className="w-full flex flex-row justify-between items-center pr-14">
       <Link href={props.whereto} className="text-2xl cursor-pointer">
