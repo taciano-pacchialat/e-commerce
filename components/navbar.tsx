@@ -14,18 +14,18 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ isOpen, toggleNavbar }) => {
   return (
     <nav
-      className={`bg-lightbrown w-screen transition-height duration-300 ${
+      className={`bg-lightbrown w-screen transition-height duration-500 ${
         isOpen ? "h-4/5" : "h-28"
       }`}
     >
       <div className="flex flex-row justify-between">
         <Image src={logoPlaceholder} alt="logo" className="self-center w-24 pt-5 pl-7" />
-        <i className="pr-5 curson-pointer text-2xl self-center" onClick={toggleNavbar}>
+        <i className="pr-10 curson-pointer text-2xl self-center" onClick={toggleNavbar}>
           {isOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
         </i>
       </div>
       <div
-        className={`w-full h-full pl-10 pb-40 transition-transform duration-300 ease-in-out ${
+        className={`w-full h-full pl-10 pb-40 transition-transform duration-500 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
