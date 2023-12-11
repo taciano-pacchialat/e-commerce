@@ -16,5 +16,12 @@ const config: Config = {
     },
   },
   plugins: [],
+  corePlugins: {
+    transitionProperty: true,
+    transitionTimingFunction: true,
+    transitionDuration: true,
+    transform: true,
+    translate: true,
+  },
 };
 export default config;
