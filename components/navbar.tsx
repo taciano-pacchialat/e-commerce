@@ -1,59 +1,46 @@
-import { NavbarLinkProps } from "@/interfaces/navbarInterfaces";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { BsChevronRight } from "react-icons/bs";
 import logoPlaceholder from "@/images/logo-Placeholder.jpg";
 import Image from "next/image";
+import { navlinks } from "@/constants/navlinks";
+import { link } from "fs";
 
 interface NavbarProps {
   isOpen: boolean;
   toggleNavbar: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ isOpen, toggleNavbar }) => {
+const Navbar = ({ isOpen, toggleNavbar }: NavbarProps) => {
   return (
     <nav
-      className={`bg-lightbrown w-screen transition-height duration-500 ${
-        isOpen ? "h-4/5" : "h-28"
+      className={`bg-lightbrown flex justify-between transition-all duration-500 ${
+        isOpen ? "h-2/3" : "h-auto"
       }`}
     >
-      <div className="flex flex-row justify-between">
-        <Image src={logoPlaceholder} alt="logo" className="self-center w-24 pt-5 pl-7" />
-        <i className="pr-10 curson-pointer text-2xl self-center" onClick={toggleNavbar}>
-          {isOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
-        </i>
-      </div>
-      <div
-        className={`w-full h-full pl-10 pb-40 transition-transform duration-500 ease-in-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
+      <Image src={logoPlaceholder} alt="logo" className="w-20 h-20 pl-4 pt-1 pb-1"></Image>
+      <i className="md:hidden text-xl pt-6 pr-4 pl-4 h-16 cursor-pointer" onClick={toggleNavbar}>
+        {isOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
+      </i>
+      <ul
+        className={`md:flex md:justify-evenly hidden  w-1/3 items-center text-lg transition-all duration-500 ${
+          isOpen ? "right-0 " : "right-full"
         }`}
       >
-        <ul className="w-full h-full flex flex-col justify-evenly items-start pl-10">
-          <NavbarLink {...{ props: { whereto: "/", text: "Efectos" } }} />
-          <NavbarLink {...{ props: { whereto: "/", text: "Amplificadores" } }} />
-          <NavbarLink {...{ props: { whereto: "/", text: "Guitarras" } }} />
-          <NavbarLink {...{ props: { whereto: "/", text: "Sonido" } }} />
-          <NavbarLink {...{ props: { whereto: "/", text: "Otros" } }} />
-        </ul>
-      </div>
+        {navlinks.map((link) => (
+          <li key={link.key}>
+            <Link href={link.href}>{link.text}</Link>
+          </li>
+        ))}
+      </ul>
     </nav>
   );
 };
 
-const NavbarLink = ({ props }: { props: NavbarLinkProps }) => {
-  //TODO change the logo based on the state of the navbar
-  //TODO make each link and arrow unify and love each other
-  return (
-    <li className="w-full flex flex-row justify-between items-center pr-14">
-      <Link href={props.whereto} className="text-2xl cursor-pointer">
-        {props.text}
-      </Link>
-      <i className="text-lg">
-        <BsChevronRight />
-      </i>
-    </li>
-  );
-};
+interface NavbarLinkProps {
+  href: string;
+  text: string;
+}
 
 export default Navbar;
