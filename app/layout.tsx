@@ -9,16 +9,10 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleNavbar = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
     <html lang="en" className="h-screen w-screen">
       <body className="w-full h-full">
-        <Navbar isOpen={isOpen} toggleNavbar={toggleNavbar} />
+        <Navbar />
         {children}
       </body>
     </html>
