@@ -17,8 +17,8 @@ const Navbar = () => {
   const toggleNavbar = () => {
     if (isOpen) {
       setIsAnimating(true);
+      setIsOpen(false);
       setTimeout(() => {
-        setIsOpen(false);
         setIsAnimating(false);
       }, 700); // Adjust this value to match the duration of your animation
     } else {
@@ -40,9 +40,7 @@ const Navbar = () => {
         className="w-auto h-16 pl-4 pt-1 pb-1 order-1"
       ></Image>
       <i
-        className={`md:hidden text-xl pt-6 pr-4 pl-4 h-16 cursor-pointer transition-icon ${
-          isOpen || isAnimating ? "order-3" : "order-2"
-        }`}
+        className={`md:hidden text-xl pt-6 pr-4 pl-4 h-16 cursor-pointer order-3`}
         onClick={toggleNavbar}
       >
         {isOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
@@ -55,13 +53,8 @@ const Navbar = () => {
             initial="hidden"
             exit="exit"
             animate={isOpen ? "show" : "hidden"}
-            onAnimationComplete={() => {
-              if (!isOpen) {
-                setIsAnimating(false);
-              }
-            }}
             className={`flex md:flex-row flex-col justify-evenly w-1/3 items-center text-xl ${
-              isOpen ? "order-2" : ""
+              isOpen || isAnimating ? "order-2" : ""
             }`}
           >
             {navlinks.map((link) => (
