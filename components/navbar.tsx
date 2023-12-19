@@ -1,14 +1,11 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import { BsChevronRight } from "react-icons/bs";
 import logoPlaceholder from "@/images/logo-Placeholder.jpg";
 import Image from "next/image";
 import { navlinks } from "@/constants/navlinks";
-import { link } from "fs";
 import { motion, AnimatePresence } from "framer-motion";
 import { linkVariants, listVariants, navbarVariants } from "@/constants/motion";
-import styles from "../styles/Navbar.module.css";
 
 const mediumScreenSize = 768;
 
@@ -56,11 +53,9 @@ const Navbar = () => {
       variants={navbarVariants}
       className={`bg-lightbrown flex flex-row md:justify-center justify-between`}
     >
-      <Image
-        src={logoPlaceholder}
-        alt="logo"
-        className="w-auto h-16 pl-4 pt-1 pb-1 order-1 md:mr-[10.3rem] "
-      ></Image>
+      <Link href="/" className="md:mr-[7rem]">
+        <Image src={logoPlaceholder} alt="logo" className="w-16 h-16 p-1"></Image>
+      </Link>
 
       <AnimatePresence>
         <i
@@ -91,7 +86,7 @@ const Navbar = () => {
         </i>
       </AnimatePresence>
 
-      {/* small screen navbar */}
+      {/* small screen links */}
       <AnimatePresence>
         {(isOpen || isAnimating) && !isMidScreen && (
           <motion.ul
@@ -109,7 +104,7 @@ const Navbar = () => {
           </motion.ul>
         )}
 
-        {/* mid screen or larger navbar */}
+        {/* mid screen or larger links */}
         {isMidScreen && (
           <ul className="flex flex-row justify-evenly w-2/5 items-center text-xl order-2">
             {navlinks.map((link) => (
