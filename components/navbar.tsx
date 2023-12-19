@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { BsChevronRight } from "react-icons/bs";
 import logoPlaceholder from "@/images/logo-Placeholder.jpg";
@@ -10,9 +10,31 @@ import { motion, AnimatePresence } from "framer-motion";
 import { linkVariants, listVariants, navbarVariants } from "@/constants/motion";
 import styles from "../styles/Navbar.module.css";
 
+const mediumScreenSize = 768;
+
+function useIsMdScreen() {
+  const [isMdScreen, setIsMdScreen] = useState(window.innerWidth >= mediumScreenSize);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMdScreen(window.innerWidth >= mediumScreenSize);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return isMdScreen;
+}
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const isMidScreen = useIsMdScreen();
 
   const toggleNavbar = () => {
     if (isOpen) {
@@ -20,7 +42,7 @@ const Navbar = () => {
       setIsOpen(false);
       setTimeout(() => {
         setIsAnimating(false);
-      }, 700); // Adjust this value to match the duration of your animation
+      }, 700);
     } else {
       setIsOpen(true);
     }
@@ -32,35 +54,70 @@ const Navbar = () => {
       animate={isOpen ? "show" : "hidden"}
       transition={{ duration: 0.7, type: "spring" }}
       variants={navbarVariants}
-      className={`bg-lightbrown flex flex-row justify-between`}
+      className={`bg-lightbrown flex flex-row md:justify-center justify-between`}
     >
       <Image
         src={logoPlaceholder}
         alt="logo"
-        className="w-auto h-16 pl-4 pt-1 pb-1 order-1"
+        className="w-auto h-16 pl-4 pt-1 pb-1 order-1 md:mr-[10.3rem] "
       ></Image>
-      <i
-        className={`md:hidden text-xl pt-6 pr-4 pl-4 h-16 cursor-pointer order-3`}
-        onClick={toggleNavbar}
-      >
-        {isOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
-      </i>
 
       <AnimatePresence>
-        {(isOpen || isAnimating) && (
+        <i
+          className={`md:hidden text-xl pt-6 pr-4 pl-4 h-16 cursor-pointer order-3 md:order-1`}
+          onClick={toggleNavbar}
+        >
+          {isOpen ? (
+            <motion.div
+              key="close"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.65 }}
+            >
+              <AiOutlineClose />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="menu"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.65 }}
+            >
+              <AiOutlineMenu />
+            </motion.div>
+          )}
+        </i>
+      </AnimatePresence>
+
+      {/* small screen navbar */}
+      <AnimatePresence>
+        {(isOpen || isAnimating) && !isMidScreen && (
           <motion.ul
-            variants={isAnimating ? {} : listVariants}
-            initial="hidden"
+            variants={listVariants}
+            initial={"hidden"}
             exit="exit"
             animate={isOpen ? "show" : "hidden"}
-            className={`flex md:flex-row flex-col justify-evenly w-1/3 items-center text-xl order-2`}
+            className={`flex flex-col justify-evenly w-1/3 items-center text-xl order-2`}
           >
             {navlinks.map((link) => (
-              <motion.li key={link.key} variants={isAnimating ? {} : linkVariants}>
+              <motion.li key={link.key} variants={linkVariants}>
                 <Link href={link.href}>{link.text}</Link>
               </motion.li>
             ))}
           </motion.ul>
+        )}
+
+        {/* mid screen or larger navbar */}
+        {isMidScreen && (
+          <ul className="flex flex-row justify-evenly w-2/5 items-center text-xl order-2">
+            {navlinks.map((link) => (
+              <li key={link.key} className="mr-4 ml-4">
+                <Link href={link.href}>{link.text}</Link>
+              </li>
+            ))}
+          </ul>
         )}
       </AnimatePresence>
     </motion.nav>
