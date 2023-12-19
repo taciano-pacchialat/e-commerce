@@ -47,18 +47,16 @@ const Navbar = () => {
       </i>
 
       <AnimatePresence>
-        {isOpen && (
+        {(isOpen || isAnimating) && (
           <motion.ul
-            variants={listVariants}
+            variants={isAnimating ? {} : listVariants}
             initial="hidden"
             exit="exit"
             animate={isOpen ? "show" : "hidden"}
-            className={`flex md:flex-row flex-col justify-evenly w-1/3 items-center text-xl ${
-              isOpen || isAnimating ? "order-2" : ""
-            }`}
+            className={`flex md:flex-row flex-col justify-evenly w-1/3 items-center text-xl order-2`}
           >
             {navlinks.map((link) => (
-              <motion.li key={link.key} variants={linkVariants}>
+              <motion.li key={link.key} variants={isAnimating ? {} : linkVariants}>
                 <Link href={link.href}>{link.text}</Link>
               </motion.li>
             ))}
